@@ -8,6 +8,9 @@ module Gamethrive
 
     # General parameters
 
+    # String: Gamethrive notification UUID.
+    attribute :id
+
     # String: Gamethrive application UUID. Required to create notifications.
     attribute :app_id
 
@@ -128,7 +131,19 @@ module Gamethrive
     attribute :delayed_option
 
     # String: Use this with :delayed_option "timezone", e.g. "9:00 AM"
-    attribute "delivery_time_of_day"
+    attribute :delivery_time_of_day
+
+
+    # Response attributes
+
+    # The following attributes are populated in responses should not be set
+    # when creating or updating notifications.
+
+    attribute :successful
+    attribute :failed
+    attribute :converted
+    attribute :remaining
+    attribute :queued_at
 
 
     #
@@ -148,6 +163,41 @@ module Gamethrive
       notification
     end
 
+    def self.list(options = {})
+      options = {
+        :app_id => nil,
+        :limit  => 50,
+        :offset => 0
+      }.merge(options)
+
+      response = Gamethrive::Client.get("/notifications", options)
+
+      response.body["notifications"].map do |attrs|
+        notification = new(attrs)
+        notification.reset_changed_attributes!
+        notification
+      end
+    end
+
+    def self.count(options = {})
+      options = {
+        :app_id => nil,
+        :limit  => 1,
+        :offset => 0
+      }.merge(options)
+
+      response = Gamethrive::Client.get("/notifications", options)
+      response.body["total_count"]
+    end
+
+    def track_open!(id)
+      raise NotImplementedError, "track_open! is not implemented."
+    end
+
+    def delete!(options = {})
+      options = { :app_id => app_id }.merge(options)
+      Gamethrive::Client.delete("/notifications/#{id}", options)
+    end
 
     #
     # Instance methods
