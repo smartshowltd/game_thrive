@@ -4,6 +4,7 @@ Bundler.setup(:default)
 require "faraday"
 require "json"
 require "logger"
+require "active_support/all"
 
 require "gamethrive/version"
 require "gamethrive/configuration"

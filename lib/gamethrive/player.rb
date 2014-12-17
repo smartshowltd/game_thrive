@@ -9,10 +9,10 @@ module Gamethrive
     # String: The player's UUID
     attribute :id
 
-    # String: your GameThrive application key
+    # String: your GameThrive application key. Required.
     attribute :app_id
 
-    # Integer: 0 = iOS, 1 = Android, 2 = Amazon, 3 = Windows Phone
+    # Integer: 0 = iOS, 1 = Android, 2 = Amazon, 3 = Windows Phone. Required.
     attribute :device_type
 
     # String: Push notification identifier from Google or Apple

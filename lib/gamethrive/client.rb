@@ -5,6 +5,7 @@ module Gamethrive
     class NoRestAPIKeyError < StandardError; end
     class RedirectedError < StandardError; end
     class BadRequestError < StandardError; end
+    class NotFoundError < StandardError; end
     class InternalServerError < StandardError; end
     class UnknownError < StandardError; end
 
@@ -78,6 +79,8 @@ module Gamethrive
         raise RedirectedError, "Redirected"
       when 400
         raise BadRequestError, "Bad Request"
+      when 404
+        raise NotFoundError, "Not Found"
       when 500
         raise InternalServerError, "Internal Server Error"
       else
