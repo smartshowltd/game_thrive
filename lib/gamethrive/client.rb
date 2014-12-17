@@ -18,7 +18,8 @@ module Gamethrive
       self.connection = Faraday.new(:url => Gamethrive::GAMETHRIVE_URL) do |faraday|
         faraday.request  :url_encoded # form-encode POST params
         faraday.response :logger, Gamethrive.configuration.logger
-        faraday.adapter  Faraday.default_adapter  # make requests with Net::HTTP
+        faraday.adapter  :net_http  # make requests with Net::HTTP
+        faraday.authorization :Basic, Gamethrive.configuration.rest_api_key
       end
     end
 
@@ -42,6 +43,7 @@ module Gamethrive
       handle_response(response)
     end
 
+
     %w(get post put head delete patch).each do |verb|
       class_eval <<-RUBY, __FILE__, __LINE__ + 1
         def self.#{verb}(path, params = nil, body = nil)
@@ -55,7 +57,6 @@ module Gamethrive
 
     def headers
       {
-        "Authorization" => http_authorization,
         "Accept"        => "application/json",
         "Content-Type"  => "application/json",
         "User-Agent"    => Gamethrive.configuration.user_agent
@@ -82,10 +83,6 @@ module Gamethrive
       else
         raise UnknownError, "Response: #{faraday_response.inspect}"
       end
-    end
-
-    def http_authorization
-      "Basic " + Gamethrive.configuration.rest_api_key
     end
 
     def json_encode(body)

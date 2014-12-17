@@ -18,7 +18,7 @@ module Gamethrive
       end
     end
 
-    def initialize
+    def initialize(attributes = {})
       reset_changed_attributes!
       reset_attributes!
 
@@ -38,6 +38,10 @@ module Gamethrive
         hash[@@attribute_mapping[attr_name].to_s] = read_attribute(attr_name)
         hash
       end
+    end
+
+    def attributes
+      @_attributes
     end
 
     protected
