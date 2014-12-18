@@ -92,6 +92,32 @@ module Gamethrive
       raise NotImplementedError, "on_focus is not implemented"
     end
 
+    def self.list(options = {})
+      options = {
+        :app_id => nil,
+        :limit => 50,
+        :offset => 0
+      }.merge(options)
+
+      response = Gamethrive::Client.get("/players", options)
+      response.body["players"].map do |attrs|
+        player = new(attrs)
+        player.reset_changed_attributes!
+        player
+      end
+    end
+
+    def self.count(options = {})
+      options = {
+        :app_id => nil,
+        :limit  => 1,
+        :offset => 0
+      }.merge(options)
+
+      response = Gamethrive::Client.get("/players", options)
+      response.body["total_count"]
+    end
+
     #
     # Instance methods
     #

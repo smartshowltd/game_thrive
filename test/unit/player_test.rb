@@ -6,7 +6,7 @@ class PlayerTest < Gamethrive::UnitTest
     super
 
     # Sample valid player
-    FakeWeb.register_uri :get, "https://gamethrive.com/api/v1/players/ffffb794-ba37-11e3-8077-031d62f86ebf", :body => JSON.dump(sample_attributes)
+    FakeWeb.register_uri :get, "https://gamethrive.com/api/v1/players/ffffb794-ba37-11e3-8077-031d62f86ebf", :body => JSON.dump(player_attributes)
   end
 
   def test_create
@@ -30,7 +30,7 @@ class PlayerTest < Gamethrive::UnitTest
 
     player = Gamethrive::Player.find("ffffb794-ba37-11e3-8077-031d62f86ebf")
     assert_kind_of Gamethrive::Player, player
-    sample_attributes.except("invalid_identifier").each do |key, value|
+    player_attributes.except("invalid_identifier").each do |key, value|
       assert_equal value, player.send(key.to_sym)
     end
     assert !player.dirty?
@@ -80,13 +80,37 @@ class PlayerTest < Gamethrive::UnitTest
     assert player.dirty?
     player.reload!
     assert_equal "/api/v1/players/ffffb794-ba37-11e3-8077-031d62f86ebf", FakeWeb.last_request.path
-    assert_equal sample_attributes["game_version"], player.game_version
+    assert_equal player_attributes["game_version"], player.game_version
     assert !player.dirty?
+  end
+
+  def test_list
+    response_body = list_attributes.merge("players" => [player_attributes])
+    FakeWeb.register_uri :get, "https://gamethrive.com/api/v1/players?app_id=app-id&limit=50&offset=0", :body => JSON.dump(response_body), :status => 200
+    players = Gamethrive::Player.list(:app_id => "app-id")
+    assert_equal 1, players.count
+    player_attributes.except("invalid_identifier").each do |key, value|
+      assert_equal value, players.first.send(key.to_sym)
+    end
+  end
+
+  def test_count
+    response_body = list_attributes.merge("players" => player_attributes)
+    FakeWeb.register_uri :get, "https://gamethrive.com/api/v1/players?app_id=app-id&limit=1&offset=0", :body => JSON.dump(response_body), :status => 200
+    assert_equal 1, Gamethrive::Player.count(:app_id => "app-id")
   end
 
   protected
 
-    def sample_attributes
+    def list_attributes
+      {
+        "total_count" => 1,
+        "offset"      => 0,
+        "limit"       => 50
+      }
+    end
+
+    def player_attributes
       {
         "id"                  => "ffffb794-ba37-11e3-8077-031d62f86ebf",
         "identifier"          => "ce777617da7f548fe7a9ab6febb56cf39fba6d382000c0395666288d961ee566",
