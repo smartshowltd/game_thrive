@@ -1,4 +1,4 @@
-module Gamethrive
+module GameThrive
 
   class Response
 

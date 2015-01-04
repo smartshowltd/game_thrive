@@ -1,9 +1,9 @@
 require File.expand_path('../../test_helper', __FILE__)
 
-class ModelTest < Gamethrive::UnitTest
+class ModelTest < GameThrive::UnitTest
 
   def setup
-    @model = Gamethrive::Model.new
+    @model = GameThrive::Model.new
     @model.class.class_eval do
       attribute :variable
       attribute :second
@@ -27,7 +27,7 @@ class ModelTest < Gamethrive::UnitTest
     assert_equal [], @model.send(:changed_attributes)
     assert_equal({}, @model.attributes)
 
-    instance = Gamethrive::Model.new(:variable => "CHANGED")
+    instance = GameThrive::Model.new(:variable => "CHANGED")
     assert_equal "CHANGED", instance.variable
     assert_equal [:variable], instance.send(:changed_attributes)
   end

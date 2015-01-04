@@ -1,5 +1,5 @@
-module Gamethrive
-  class Player < Gamethrive::Model
+module GameThrive
+  class Player < GameThrive::Model
 
     #
     # Attributes
@@ -73,7 +73,7 @@ module Gamethrive
     end
 
     def self.find(id)
-      response = Gamethrive::Client.get("/players/#{id}")
+      response = GameThrive::Client.get("/players/#{id}")
 
       player = new(response.body)
       player.reset_changed_attributes!
@@ -99,7 +99,7 @@ module Gamethrive
         :offset => 0
       }.merge(options)
 
-      response = Gamethrive::Client.get("/players", options)
+      response = GameThrive::Client.get("/players", options)
       response.body["players"].map do |attrs|
         player = new(attrs)
         player.reset_changed_attributes!
@@ -114,7 +114,7 @@ module Gamethrive
         :offset => 0
       }.merge(options)
 
-      response = Gamethrive::Client.get("/players", options)
+      response = GameThrive::Client.get("/players", options)
       response.body["total_count"]
     end
 
@@ -131,9 +131,9 @@ module Gamethrive
       return if changed_attributes.empty?
 
       response = if persisted?
-        Gamethrive::Client.put("/players/#{id}", {}, attributes_for_api)
+        GameThrive::Client.put("/players/#{id}", {}, attributes_for_api)
       else
-        Gamethrive::Client.post("/players", {}, attributes_for_api)
+        GameThrive::Client.post("/players", {}, attributes_for_api)
       end
 
       # Reset changed attributes after a save. If we receive an error response
@@ -148,7 +148,7 @@ module Gamethrive
     end
 
     def reload!
-      response = Gamethrive::Client.get("/players/#{id}")
+      response = GameThrive::Client.get("/players/#{id}")
       assign_attributes(response.body)
       reset_changed_attributes!
 

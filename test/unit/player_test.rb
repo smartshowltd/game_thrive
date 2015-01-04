@@ -1,6 +1,6 @@
 require File.expand_path('../../test_helper', __FILE__)
 
-class PlayerTest < Gamethrive::UnitTest
+class PlayerTest < GameThrive::UnitTest
 
   def setup
     super
@@ -14,36 +14,35 @@ class PlayerTest < Gamethrive::UnitTest
     FakeWeb.register_uri :post, "https://gamethrive.com/api/v1/players", :body => JSON.dump(response_body)
 
     # Success
-    response = Gamethrive::Player.create :app_id => "app-id", :device_type => 0, :identifier => "012345"
+    response = GameThrive::Player.create :app_id => "app-id", :device_type => 0, :identifier => "012345"
     assert_equal response_body, response
 
     FakeWeb.register_uri :post, "https://gamethrive.com/api/v1/players", :body => "Bad request", :status => 400
-
     # Fail, emulating missing params.
-    assert_raises Gamethrive::Client::BadRequestError do
-      Gamethrive::Player.create :app_id => "app-id"
+    assert_raises GameThrive::Client::BadRequestError do
+      GameThrive::Player.create :app_id => "app-id"
     end
   end
 
   def test_find
     FakeWeb.register_uri :get, "https://gamethrive.com/api/v1/players/ffffb794-ba37-11e3-8077-000000000000", :body => "Not Found", :status => 400
 
-    player = Gamethrive::Player.find("ffffb794-ba37-11e3-8077-031d62f86ebf")
-    assert_kind_of Gamethrive::Player, player
+    player = GameThrive::Player.find("ffffb794-ba37-11e3-8077-031d62f86ebf")
+    assert_kind_of GameThrive::Player, player
     player_attributes.except("invalid_identifier").each do |key, value|
       assert_equal value, player.send(key.to_sym)
     end
     assert !player.dirty?
     assert player.persisted?
 
-    assert_raises Gamethrive::Client::BadRequestError do
-      Gamethrive::Player.find("ffffb794-ba37-11e3-8077-000000000000")
+    assert_raises GameThrive::Client::BadRequestError do
+      GameThrive::Player.find("ffffb794-ba37-11e3-8077-000000000000")
     end
   end
 
   def test_update_attributes
     FakeWeb.register_uri :put, "https://gamethrive.com/api/v1/players/ffffb794-ba37-11e3-8077-031d62f86ebf", :body => JSON.dump("success" => true), :status => 200
-    player = Gamethrive::Player.find("ffffb794-ba37-11e3-8077-031d62f86ebf")
+    player = GameThrive::Player.find("ffffb794-ba37-11e3-8077-031d62f86ebf")
     response = player.update_attributes(:game_version => "2.0")
     assert_equal({ "success" => true }, response)
     assert_equal "2.0", player.game_version
@@ -53,28 +52,28 @@ class PlayerTest < Gamethrive::UnitTest
     FakeWeb.register_uri :put, "https://gamethrive.com/api/v1/players/ffffb794-ba37-11e3-8077-031d62f86ebf", :body => JSON.dump("success" => true), :status => 200
     FakeWeb.register_uri :post, "https://gamethrive.com/api/v1/players", :body => JSON.dump("success" => true), :status => 200
 
-    player = Gamethrive::Player.find("ffffb794-ba37-11e3-8077-031d62f86ebf")
+    player = GameThrive::Player.find("ffffb794-ba37-11e3-8077-031d62f86ebf")
     player.game_version = "3.0"
     response = player.save
     assert_equal({ "success" => true }, response)
     assert_equal "/api/v1/players/ffffb794-ba37-11e3-8077-031d62f86ebf", FakeWeb.last_request.path
 
-    player = Gamethrive::Player.new(:app_id => "app-id", :device_type => 0, :identifier => "012345")
+    player = GameThrive::Player.new(:app_id => "app-id", :device_type => 0, :identifier => "012345")
     response = player.save
     assert_equal({ "success" => true }, response)
     assert_equal "/api/v1/players", FakeWeb.last_request.path
   end
 
   def test_persisted?
-    player = Gamethrive::Player.find("ffffb794-ba37-11e3-8077-031d62f86ebf")
+    player = GameThrive::Player.find("ffffb794-ba37-11e3-8077-031d62f86ebf")
     assert player.persisted?
 
-    player2 = Gamethrive::Player.new
+    player2 = GameThrive::Player.new
     assert !player2.persisted?
   end
 
   def test_reload
-    player = Gamethrive::Player.find("ffffb794-ba37-11e3-8077-031d62f86ebf")
+    player = GameThrive::Player.find("ffffb794-ba37-11e3-8077-031d62f86ebf")
     player.game_version = "4.0"
     assert_equal "4.0", player.game_version
     assert player.dirty?
@@ -87,7 +86,7 @@ class PlayerTest < Gamethrive::UnitTest
   def test_list
     response_body = list_attributes.merge("players" => [player_attributes])
     FakeWeb.register_uri :get, "https://gamethrive.com/api/v1/players?app_id=app-id&limit=50&offset=0", :body => JSON.dump(response_body), :status => 200
-    players = Gamethrive::Player.list(:app_id => "app-id")
+    players = GameThrive::Player.list(:app_id => "app-id")
     assert_equal 1, players.count
     player_attributes.except("invalid_identifier").each do |key, value|
       assert_equal value, players.first.send(key.to_sym)
@@ -97,7 +96,7 @@ class PlayerTest < Gamethrive::UnitTest
   def test_count
     response_body = list_attributes.merge("players" => player_attributes)
     FakeWeb.register_uri :get, "https://gamethrive.com/api/v1/players?app_id=app-id&limit=1&offset=0", :body => JSON.dump(response_body), :status => 200
-    assert_equal 1, Gamethrive::Player.count(:app_id => "app-id")
+    assert_equal 1, GameThrive::Player.count(:app_id => "app-id")
   end
 
   protected

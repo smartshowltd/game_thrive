@@ -1,5 +1,5 @@
-module Gamethrive
-  class Notification < Gamethrive::Model
+module GameThrive
+  class Notification < GameThrive::Model
 
     #
     # Attributes
@@ -8,10 +8,10 @@ module Gamethrive
 
     # General parameters
 
-    # String: Gamethrive notification UUID.
+    # String: GameThrive notification UUID.
     attribute :id
 
-    # String: Gamethrive application UUID. Required to create notifications.
+    # String: GameThrive application UUID. Required to create notifications.
     attribute :app_id
 
     # Hash: Contents to send in the message, where keys are two-character language
@@ -156,7 +156,7 @@ module Gamethrive
     end
 
     def self.find(id)
-      response = Gamethrive::Client.get("/notifications/#{id}")
+      response = GameThrive::Client.get("/notifications/#{id}")
 
       notification = new(response.body)
       notification.reset_changed_attributes!
@@ -170,7 +170,7 @@ module Gamethrive
         :offset => 0
       }.merge(options)
 
-      response = Gamethrive::Client.get("/notifications", options)
+      response = GameThrive::Client.get("/notifications", options)
 
       response.body["notifications"].map do |attrs|
         notification = new(attrs)
@@ -186,7 +186,7 @@ module Gamethrive
         :offset => 0
       }.merge(options)
 
-      response = Gamethrive::Client.get("/notifications", options)
+      response = GameThrive::Client.get("/notifications", options)
       response.body["total_count"]
     end
 
@@ -196,7 +196,7 @@ module Gamethrive
 
     def delete!(options = {})
       options = { :app_id => app_id }.merge(options)
-      Gamethrive::Client.delete("/notifications/#{id}", options)
+      GameThrive::Client.delete("/notifications/#{id}", options)
     end
 
     #
@@ -212,9 +212,9 @@ module Gamethrive
       return if changed_attributes.empty?
 
       response = if persisted?
-        Gamethrive::Client.put("/notifications/#{id}", {}, attributes_for_api)
+        GameThrive::Client.put("/notifications/#{id}", {}, attributes_for_api)
       else
-        Gamethrive::Client.post("/notifications", {}, attributes_for_api)
+        GameThrive::Client.post("/notifications", {}, attributes_for_api)
       end
 
       # Reset changed attributes after a save. If we receive an error response
@@ -229,7 +229,7 @@ module Gamethrive
     end
 
     def reload!
-      response = Gamethrive::Client.get("/notifications/#{id}")
+      response = GameThrive::Client.get("/notifications/#{id}")
       assign_attributes(response.body)
       reset_changed_attributes!
 

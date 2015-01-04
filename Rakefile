@@ -6,7 +6,7 @@ namespace :test do
 
   desc "Test the basics of the adapter"
   Rake::TestTask.new(:units) do |t|
-    t.libs << "lib/gamethrive"
+    t.libs << "lib/game_thrive"
     t.test_files = FileList["test/unit/*_test.rb"]
     t.verbose = true
   end
@@ -15,7 +15,7 @@ end
 
 desc "Run all tests"
 Rake::TestTask.new do |t|
-  t.libs << "lib/gamethrive"
+  t.libs << "lib/game_thrive"
   t.test_files = FileList["test/*/*_test.rb"]
   t.verbose = true
 end

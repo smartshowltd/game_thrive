@@ -6,15 +6,15 @@ require "json"
 require "logger"
 require "active_support/all"
 
-require "gamethrive/version"
-require "gamethrive/configuration"
-require "gamethrive/response"
-require "gamethrive/client"
-require "gamethrive/model"
-require "gamethrive/player"
-require "gamethrive/notification"
+require "game_thrive/version"
+require "game_thrive/configuration"
+require "game_thrive/response"
+require "game_thrive/client"
+require "game_thrive/model"
+require "game_thrive/player"
+require "game_thrive/notification"
 
-module Gamethrive
+module GameThrive
 
   GAMETHRIVE_URL = "https://gamethrive.com"
 

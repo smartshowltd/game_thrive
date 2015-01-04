@@ -1,13 +1,13 @@
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'gamethrive/version'
+require 'game_thrive/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = "gamethrive"
-  spec.version       = Gamethrive::VERSION
+  spec.name          = "game_thrive"
+  spec.version       = GameThrive::VERSION
   spec.date          = "2014-12-09"
-  spec.summary       = "Ruby client for Gamethrive"
-  spec.description   = "A Gamethrive API client for Ruby"
+  spec.summary       = "Ruby client for GameThrive"
+  spec.description   = "A GameThrive API client for Ruby"
   spec.authors       = ["ShowGizmo", "James Stradling"]
   spec.email         = "james@stdlng.com"
   spec.homepage      = "http://www.gamethrive.com"
@@ -23,8 +23,8 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "faraday"
   spec.add_runtime_dependency "system_timer"
   spec.add_runtime_dependency "json"
+  spec.add_runtime_dependency "activesupport", ["~> 3.2"]
 
   spec.add_development_dependency "fakeweb", ["~> 1.3"]
   spec.add_development_dependency "minitest", ["~> 4.2"]
-  spec.add_development_dependency "activesupport", ["~> 3.2"]
 end
