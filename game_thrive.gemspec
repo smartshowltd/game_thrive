@@ -5,7 +5,7 @@ require 'game_thrive/version'
 Gem::Specification.new do |spec|
   spec.name          = "game_thrive"
   spec.version       = GameThrive::VERSION
-  spec.date          = "2014-12-09"
+  spec.date          = "2015-01-05"
   spec.summary       = "Ruby client for GameThrive"
   spec.description   = "A GameThrive API client for Ruby"
   spec.authors       = ["ShowGizmo", "James Stradling"]
