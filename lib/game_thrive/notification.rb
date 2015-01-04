@@ -121,6 +121,8 @@ module GameThrive
 
     # String: Schedule notification for future delivery, example:
     # "Fri May 02 2014 00:00:00 GMT-0700 (PDT)"
+    # This can be supplied as a Ruby Time object which will be automatically
+    # converted to an ISO 8601 string by the JSON encoder.
     attribute :send_after
 
     # String: Customise delivery to player/user - possible values are:
