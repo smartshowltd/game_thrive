@@ -157,8 +157,10 @@ module GameThrive
       notification.save
     end
 
-    def self.find(id)
-      response = GameThrive::Client.get("/notifications/#{id}")
+    def self.find(id, options = {})
+      options = { :app_id => nil }.merge(options)
+
+      response = GameThrive::Client.get("/notifications/#{id}", options)
 
       notification = new(response.body)
       notification.reset_changed_attributes!

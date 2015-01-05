@@ -5,7 +5,7 @@ class NotificationTest < GameThrive::UnitTest
   def setup
     super
 
-    FakeWeb.register_uri :get, "https://gamethrive.com/api/v1/notifications/458dcec4-cf53-11e3-add2-000c2940e62c", :body => JSON.dump(sample_notification_attributes), :status => 200
+    FakeWeb.register_uri :get, "https://gamethrive.com/api/v1/notifications/458dcec4-cf53-11e3-add2-000c2940e62c?app_id=app-id", :body => JSON.dump(sample_notification_attributes), :status => 200
   end
 
   def test_create
@@ -17,17 +17,17 @@ class NotificationTest < GameThrive::UnitTest
   end
 
   def test_find
-    notification = GameThrive::Notification.find("458dcec4-cf53-11e3-add2-000c2940e62c")
+    notification = GameThrive::Notification.find("458dcec4-cf53-11e3-add2-000c2940e62c", :app_id => "app-id")
     sample_notification_attributes.each do |key, value|
       assert_equal value, notification.send(key.to_sym)
     end
     assert notification.persisted?
     assert !notification.dirty?
 
-    FakeWeb.register_uri :get, "https://gamethrive.com/api/v1/notifications/458dcec4-cf53-11e3-add2-000000000000", :body => "Bad Request", :status => 400
+    FakeWeb.register_uri :get, "https://gamethrive.com/api/v1/notifications/458dcec4-cf53-11e3-add2-000000000000?app_id=app-id", :body => "Bad Request", :status => 400
 
     assert_raises GameThrive::Client::BadRequestError do
-      GameThrive::Notification.find("458dcec4-cf53-11e3-add2-000000000000")
+      GameThrive::Notification.find("458dcec4-cf53-11e3-add2-000000000000", :app_id => "app-id")
     end
   end
 
@@ -50,7 +50,7 @@ class NotificationTest < GameThrive::UnitTest
   def test_delete
     response_body = { "success" => true }
     FakeWeb.register_uri :delete, "https://gamethrive.com/api/v1/notifications/458dcec4-cf53-11e3-add2-000c2940e62c?app_id=app-id", :body => JSON.dump(response_body), :status => 200
-    notification = GameThrive::Notification.find("458dcec4-cf53-11e3-add2-000c2940e62c")
+    notification = GameThrive::Notification.find("458dcec4-cf53-11e3-add2-000c2940e62c", :app_id => "app-id")
     notification.delete!(:app_id => "app-id")
     assert_equal "/api/v1/notifications/458dcec4-cf53-11e3-add2-000c2940e62c?app_id=app-id", FakeWeb.last_request.path
     assert_equal "DELETE", FakeWeb.last_request.method
