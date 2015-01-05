@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "faraday"
   spec.add_runtime_dependency "system_timer"
   spec.add_runtime_dependency "json"
-  spec.add_runtime_dependency "activesupport", ["~> 3.2"]
+  spec.add_runtime_dependency "activesupport", ["~> 3.1"]
 
   spec.add_development_dependency "fakeweb", ["~> 1.3"]
   spec.add_development_dependency "minitest", ["~> 4.2"]
