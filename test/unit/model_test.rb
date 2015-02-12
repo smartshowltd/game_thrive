@@ -12,12 +12,12 @@ class ModelTest < GameThrive::UnitTest
   end
 
   def test_self_attribute
-    assert @model.class.instance_methods.include?("variable")
-    assert @model.class.instance_methods.include?("variable=")
-    assert @model.class.instance_methods.include?("variable_changed?")
-    assert @model.class.instance_methods.include?("custom")
-    assert @model.class.instance_methods.include?("custom=")
-    assert @model.class.instance_methods.include?("custom_changed?")
+    assert @model.class.method_defined?("variable")
+    assert @model.class.method_defined?("variable=")
+    assert @model.class.method_defined?("variable_changed?")
+    assert @model.class.method_defined?("custom")
+    assert @model.class.method_defined?("custom=")
+    assert @model.class.method_defined?("custom_changed?")
 
     attribute_mapping = @model.class.send(:class_variable_get, :@@attribute_mapping)
     assert_equal "CUSTOM", attribute_mapping[:custom]
