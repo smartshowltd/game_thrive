@@ -9,7 +9,7 @@ Gem::Specification.new do |spec|
   spec.summary                = "Ruby client for GameThrive"
   spec.description            = "A GameThrive API client for Ruby"
   spec.authors                = ["ShowGizmo", "James Stradling"]
-  spec.email                  = "james@stdlng.com"
+  spec.email                  = "james@strdlng.com"
   spec.homepage               = "http://www.gamethrive.com"
   spec.license                = "MIT"
   spec.required_ruby_version  = '>= 1.9.3'
