@@ -59,7 +59,7 @@ module GameThrive
     attribute :include_android_reg_ids
 
     # Array: Specific Windows Phone channel UIs to send notifications to
-    attribute :include_wp_urls
+    attribute :include_wp_uris
 
     # Group: Tags
 
