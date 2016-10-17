@@ -112,6 +112,11 @@ module GameThrive
     # resource name or URL
     attribute :big_picture
 
+    # Object: Adds media attachments to notifications. Set as JSON object,
+    # key as a media id of your choice and the value as a valid local file name
+    # or URL. User must press and hold on the notification to view.
+    attribute :ios_attachments
+    
     # String: Specify a URL to have it open in system browser when notification
     # is opened
     attribute :url
