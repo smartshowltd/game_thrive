@@ -121,6 +121,15 @@ module GameThrive
     # your app before it is displayed.
     attribute :mutable_content
 
+    # String: Category APNS payload, use with
+    # registerUserNotificationSettings:categories in your Objective-C/Swift code
+    attribute :ios_category
+
+    # String: Only one notification with the same id will be shown on the device
+    # Use the same ID to update an existing notification instead of showing a
+    # new one.
+    attribute :collapse_id
+
     # String: Specify a URL to have it open in system browser when notification
     # is opened
     attribute :url
