@@ -112,6 +112,24 @@ module GameThrive
     # resource name or URL
     attribute :big_picture
 
+    # Object: Adds media attachments to notifications. Set as JSON object,
+    # key as a media id of your choice and the value as a valid local file name
+    # or URL. User must press and hold on the notification to view.
+    attribute :ios_attachments
+
+    # Boolean: Sending true allows you to change the notification content in
+    # your app before it is displayed.
+    attribute :mutable_content
+
+    # String: Category APNS payload, use with
+    # registerUserNotificationSettings:categories in your Objective-C/Swift code
+    attribute :ios_category
+
+    # String: Only one notification with the same id will be shown on the device
+    # Use the same ID to update an existing notification instead of showing a
+    # new one.
+    attribute :collapse_id
+
     # String: Specify a URL to have it open in system browser when notification
     # is opened
     attribute :url
